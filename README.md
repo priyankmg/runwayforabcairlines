@@ -38,6 +38,10 @@ Hero UI: **horizontal runway tracker** with stage cards and animated aircraft po
 
 ---
 
+## Git / updates
+
+Default branch is **`main`**. After we push, run **`git pull origin main`** in your clone so you see the latest `/runway` and dashboard changes. Confirm the remote: `git remote -v`.
+
 ## Local development
 
 ```bash

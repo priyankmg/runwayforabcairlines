@@ -9,9 +9,12 @@ import { phaseStripProgress } from "@/services/runway-engine";
 
 type Props = {
   expertStage: RunwayStage;
+  /** Use h2 on the dashboard; h1 on the /runway page. */
+  titleAs?: "h1" | "h2";
+  className?: string;
 };
 
-export function RunwayPhaseStrip({ expertStage }: Props) {
+export function RunwayPhaseStrip({ expertStage, titleAs = "h1", className = "" }: Props) {
   const [selected, setSelected] = useState<RunwayStage>(expertStage);
 
   useEffect(() => {
@@ -19,10 +22,11 @@ export function RunwayPhaseStrip({ expertStage }: Props) {
   }, [expertStage]);
 
   const active = getRunwayPhaseCopy(selected);
+  const TitleTag = titleAs;
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">Your runway</h1>
+    <div className={`w-full max-w-[1440px] mx-auto px-4 md:px-6 ${className}`}>
+      <TitleTag className="text-2xl font-semibold tracking-tight text-white md:text-3xl">Your runway</TitleTag>
 
       <div
         className="mt-6 min-h-[120px] rounded-2xl border border-white/10 bg-[#0F2B5B]/25 p-6 md:p-8"
