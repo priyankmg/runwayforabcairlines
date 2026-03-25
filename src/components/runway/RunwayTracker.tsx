@@ -30,7 +30,7 @@ export function RunwayTracker({
   return (
     <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-b from-[#0F2B5B]/80 to-[#0B1426] p-6 shadow-lg shadow-black/40">
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Overall progress</h2>
+        <h2 className="text-lg font-semibold text-white">Your runway</h2>
         <span className="rounded-full bg-amber-500/15 px-3 py-1 text-xs font-medium text-amber-400">
           {overallPercent}% to Takeoff pace
         </span>

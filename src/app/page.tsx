@@ -3,7 +3,6 @@ import { getExpert, JORDAN_ID } from "@/data/mock/experts";
 import { buildStageProgressList, runwayProgressPercent } from "@/services/runway-engine";
 import { BADGES } from "@/data/mock/badges";
 import { RunwayTracker } from "@/components/runway/RunwayTracker";
-import { DashboardRunwayPhases } from "@/components/runway/DashboardRunwayPhases";
 import { MISSIONS } from "@/data/mock/missions";
 import { isMissionUnlocked } from "@/services/runway-engine";
 
@@ -19,21 +18,17 @@ export default function DashboardPage() {
     MISSIONS.find((m) => isMissionUnlocked(m.id, expert) && !expert.missionIdsCompleted.includes(m.id)) ?? MISSIONS[5];
 
   return (
-    <div className="mx-auto max-w-[1440px] space-y-10 px-0">
-      <header className="mx-auto max-w-6xl px-4 md:px-6">
+    <div className="mx-auto max-w-6xl space-y-8">
+      <header>
         <h1 className="text-2xl font-semibold tracking-tight text-white">
           Good morning, {expert.name.split(" ")[0]}
         </h1>
         <p className="mt-1 text-slate-400">Here is your runway — stage {expert.stage}, day {expert.daysInStage} in phase.</p>
       </header>
 
-      <DashboardRunwayPhases expertStage={expert.stage} />
+      <RunwayTracker stages={stages} overallPercent={overall} />
 
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <RunwayTracker stages={stages} overallPercent={overall} />
-      </div>
-
-      <div className="mx-auto max-w-6xl grid gap-4 px-4 md:grid-cols-3 md:px-6">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
           <h2 className="text-sm font-semibold text-amber-400">Current focus</h2>
           <p className="mt-2 text-lg font-medium text-white">Taxi — training missions</p>
@@ -56,7 +51,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+      <div>
         <h2 className="mb-3 text-sm font-semibold text-white">Recent badges</h2>
         <div className="flex flex-wrap gap-3">
           {recent.length === 0 && <span className="text-sm text-slate-500">Complete missions to earn badges.</span>}
@@ -74,7 +69,7 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="mx-auto max-w-6xl rounded-xl border border-sky-500/20 bg-sky-500/5 p-4 px-4 md:px-6">
+      <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-4">
         <h2 className="font-medium text-white">Buddy</h2>
         <p className="mt-1 text-sm text-slate-400">
           Riley Stone (Takeoff stage) — last message: &quot;Ping me before your first live contact.&quot;
