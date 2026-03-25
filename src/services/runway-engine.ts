@@ -1,7 +1,7 @@
 import type { Expert, RunwayStage } from "@/data/types/expert";
 import { MISSIONS } from "@/data/mock/missions";
 
-const STAGE_ORDER: RunwayStage[] = ["GATE", "PUSHBACK", "TAXI", "ROLL", "TAKEOFF"];
+export const RUNWAY_STAGE_ORDER: RunwayStage[] = ["GATE", "PUSHBACK", "TAXI", "ROLL", "TAKEOFF"];
 
 export interface StageProgress {
   stage: RunwayStage;
@@ -18,15 +18,27 @@ const STAGE_LABELS: Record<RunwayStage, string> = {
   TAKEOFF: "Takeoff",
 };
 
-function stageIndex(s: RunwayStage): number {
-  return STAGE_ORDER.indexOf(s);
+export function runwayStageIndex(s: RunwayStage): number {
+  return RUNWAY_STAGE_ORDER.indexOf(s);
+}
+
+/** Progress relative to expert's actual stage (for runway strip styling). */
+export function phaseStripProgress(
+  phase: RunwayStage,
+  expertStage: RunwayStage
+): "complete" | "current" | "locked" {
+  const ei = runwayStageIndex(expertStage);
+  const pi = runwayStageIndex(phase);
+  if (pi < ei) return "complete";
+  if (pi === ei) return "current";
+  return "locked";
 }
 
 /** Rough % within journey for runway animation (0–100). */
 export function runwayProgressPercent(expert: Expert): number {
-  const idx = stageIndex(expert.stage);
-  const base = (idx / (STAGE_ORDER.length - 1)) * 100;
-  const within = withinStageFraction(expert) * (100 / (STAGE_ORDER.length - 1));
+  const idx = runwayStageIndex(expert.stage);
+  const base = (idx / (RUNWAY_STAGE_ORDER.length - 1)) * 100;
+  const within = withinStageFraction(expert) * (100 / (RUNWAY_STAGE_ORDER.length - 1));
   return Math.min(100, Math.round(base + within * 0.25));
 }
 
@@ -52,8 +64,8 @@ function withinStageFraction(expert: Expert): number {
 }
 
 export function buildStageProgressList(expert: Expert): StageProgress[] {
-  const currentIdx = stageIndex(expert.stage);
-  return STAGE_ORDER.map((stage, i) => {
+  const currentIdx = runwayStageIndex(expert.stage);
+  return RUNWAY_STAGE_ORDER.map((stage, i) => {
     let status: StageProgress["status"] = "upcoming";
     if (i < currentIdx) status = "complete";
     else if (i === currentIdx) status = "current";
