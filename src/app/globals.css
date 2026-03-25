@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --runway-navy: #0f2b5b;
+  --runway-amber: #f59e0b;
+  --runway-sky: #0ea5e9;
+  --runway-dark: #0b1426;
+  --runway-success: #10b981;
+  --runway-danger: #ef4444;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--runway-dark);
+  color: #e2e8f0;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
