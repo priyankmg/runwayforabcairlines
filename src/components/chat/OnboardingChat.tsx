@@ -9,7 +9,11 @@ export function OnboardingChat({ stage }: { stage: string }) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi — I'm your Onboarding Assistant. Ask me about Runway, day one, or missions." },
+    {
+      role: "assistant",
+      content:
+        "Hi — I'm your Onboarding Assistant (v2). Ask about milestones, My Help Network, or say **Good morning** for a progress-style briefing.",
+    },
   ]);
   const [loading, setLoading] = useState(false);
 

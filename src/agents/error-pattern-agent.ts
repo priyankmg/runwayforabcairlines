@@ -7,8 +7,7 @@ function fallbackCard(expert: Expert): CoachingCard {
   return {
     errorType: "Policy application",
     occurrences: 2,
-    lastOccurred: expert.missionIdsCompleted[expert.missionIdsCompleted.length - 1] ?? "res-l2",
-    coachingTip: "Before offering compensation, name the policy section and confirm eligibility in two sentences.",
+    coachingTip: `${expert.name.split(" ")[0]}, before offering compensation, name the policy section and confirm eligibility in two sentences.`,
     exampleFromMission: "You offered a cash refund where only credit applies—instead, explain credit shell timeline.",
     policyReference: "refund-credit",
   };
@@ -17,7 +16,7 @@ function fallbackCard(expert: Expert): CoachingCard {
 export async function runErrorPatternAgent(expert: Expert): Promise<CoachingCard[]> {
   try {
     const card = await completeJson<CoachingCard>(
-      `You analyze simulation history for ABC Airlines trainees. Return ONE JSON object CoachingCard with fields errorType, occurrences, lastOccurred (mission id string), coachingTip (max 50 words), exampleFromMission, optional policyReference.`,
+      `Return ONE JSON object CoachingCard: errorType, occurrences, coachingTip (max 50 words), exampleFromMission, policyReference string|null.`,
       `Expert ${expert.name} completed missions: ${expert.missionIdsCompleted.join(", ")}. Readiness ${expert.readinessScore}. Infer a plausible repeated mistake pattern.`
     );
     await logGovernance({

@@ -9,6 +9,17 @@ Persona: ${s.customerPersona}
 Problem: ${s.problem}
 Stay in character. Do not solve the issue yourself—make the support agent work through it. Keep messages under 60 words. If the agent gives a correct resolution path per policy, you may accept gracefully.`;
 
+const DEBRIEF_JSON_HINT = `Return ONLY valid JSON for SimulationDebrief v2:
+{
+  "score": { "accuracy": number, "empathyLanguage": number, "resolutionSpeed": number, "policyCompliance": number },
+  "overallGrade": "PASS" | "RETRY",
+  "whatWentWell": string[],
+  "areasToImprove": string[],
+  "policyReference": string,
+  "badgeEarned": string | null
+}
+All score fields 0-100.`;
+
 export async function simulationCustomerReply(session: SimSession, expertMessage: string): Promise<string> {
   const transcript = session.messages
     .map((m) => `${m.role === "customer" ? "Customer" : "Expert"}: ${m.content}`)
@@ -48,16 +59,18 @@ export function mockDebrief(session: SimSession, expertLines: number): Simulatio
   const elapsed = (Date.now() - session.startedAt) / 1000;
   const base = Math.min(95, 55 + expertLines * 6 - Math.min(15, elapsed / 60));
   const accuracy = Math.round(base + Math.random() * 8);
-  const empathy = Math.round(Math.min(95, accuracy - 5 + Math.random() * 10));
+  const empathyLanguage = Math.round(Math.min(95, accuracy - 5 + Math.random() * 10));
+  const resolutionSpeed = Math.max(40, Math.round(100 - elapsed / 3));
+  const policyCompliance = Math.round(accuracy - 3);
+  const avg = (accuracy + empathyLanguage + resolutionSpeed + policyCompliance) / 4;
+  const overallGrade: SimulationDebrief["overallGrade"] = avg >= 68 ? "PASS" : "RETRY";
   return {
-    accuracy,
-    empathy,
-    resolutionSpeed: Math.max(40, Math.round(100 - elapsed / 3)),
-    policyCompliance: Math.round(accuracy - 3),
-    overallScore: Math.round((accuracy + empathy) / 2),
-    summary: "Solid structure—keep tying offers back to published policy and confirming customer understanding before close.",
-    improvements: ["Quote the specific policy name when you decline a request.", "Add a empathy line before the 'no'."],
-    strengths: ["Clear ownership of the thread.", "Appropriate pacing for the scenario difficulty."],
+    score: { accuracy, empathyLanguage, resolutionSpeed, policyCompliance },
+    overallGrade,
+    whatWentWell: ["Clear ownership of the thread.", "Appropriate pacing for scenario difficulty."],
+    areasToImprove: ["Quote the specific policy name when you decline a request.", "Add an empathy line before the no."],
+    policyReference: session.scenario.code,
+    badgeEarned: overallGrade === "PASS" ? null : null,
   };
 }
 
@@ -69,7 +82,7 @@ export async function simulationCompleteDebrief(session: SimSession): Promise<Si
     await logGovernance({
       agent: "Simulation Engine / debrief",
       inputSummary: `mission=${session.missionId}`,
-      outputSummary: `score=${debrief.overallScore}`,
+      outputSummary: `grade=${debrief.overallGrade}`,
       confidence: 0.55,
     });
     return debrief;
@@ -78,13 +91,16 @@ export async function simulationCompleteDebrief(session: SimSession): Promise<Si
   try {
     const transcript = session.messages.map((m) => `${m.role}: ${m.content}`).join("\n");
     const parsed = await completeJson<SimulationDebrief>(
-      `Return ONLY valid JSON matching SimulationDebrief: accuracy, empathy, resolutionSpeed, policyCompliance, overallScore (0-100 numbers), summary (string), improvements (string array), strengths (string array). Scenario: ${session.scenario.code}. Correct resolution: ${session.scenario.correctResolution}`,
+      `${DEBRIEF_JSON_HINT} Scenario: ${session.scenario.code}. Correct resolution: ${session.scenario.correctResolution}`,
       `Full transcript:\n${transcript}`
     );
+    if (!parsed?.score || typeof parsed.overallGrade !== "string") {
+      throw new Error("Invalid debrief shape");
+    }
     await logGovernance({
       agent: "Simulation Engine / debrief",
       inputSummary: `mission=${session.missionId}`,
-      outputSummary: `score=${parsed.overallScore}`,
+      outputSummary: `grade=${parsed.overallGrade}`,
       confidence: 0.78,
     });
     return parsed;
@@ -92,7 +108,7 @@ export async function simulationCompleteDebrief(session: SimSession): Promise<Si
     await logGovernance({
       agent: "Simulation Engine / debrief (fallback)",
       inputSummary: `mission=${session.missionId}`,
-      outputSummary: `score=${debrief.overallScore}`,
+      outputSummary: `grade=${debrief.overallGrade}`,
       confidence: 0.5,
     });
     return debrief;

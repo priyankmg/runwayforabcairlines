@@ -7,6 +7,7 @@ type Props = {
   name: string;
   description: string;
   earnCondition: string;
+  reward?: string;
   earned: boolean;
   Icon: LucideIcon;
   index: number;
@@ -21,7 +22,7 @@ const RING_COLORS = [
   "from-cyan-400/70 to-sky-700/50",
 ];
 
-export function BadgeMedal({ name, description, earnCondition, earned, Icon, index }: Props) {
+export function BadgeMedal({ name, description, earnCondition, reward, earned, Icon, index }: Props) {
   const ring = RING_COLORS[index % RING_COLORS.length];
 
   return (
@@ -61,6 +62,9 @@ export function BadgeMedal({ name, description, earnCondition, earned, Icon, ind
       <h2 className="mt-3 max-w-[160px] text-sm font-bold leading-snug text-white">{name}</h2>
       <p className="mt-1 max-w-[200px] text-xs leading-snug text-slate-400">{description}</p>
       <p className="mt-2 max-w-[220px] text-[10px] uppercase tracking-wide text-slate-600">{earnCondition}</p>
+      {reward && (
+        <p className="mt-2 max-w-[220px] text-[11px] font-medium text-amber-400/90">{reward}</p>
+      )}
     </motion.div>
   );
 }

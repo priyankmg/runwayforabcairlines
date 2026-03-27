@@ -6,10 +6,9 @@ export interface Message {
 export interface CoachingCard {
   errorType: string;
   occurrences: number;
-  lastOccurred: string;
   coachingTip: string;
   exampleFromMission: string;
-  policyReference?: string;
+  policyReference?: string | null;
 }
 
 export interface ReadinessAssessment {
@@ -47,13 +46,17 @@ export interface RetentionRiskAlert {
   confidenceScore: number;
 }
 
+/** v2 Simulation Engine post-mission debrief (spec §6). */
 export interface SimulationDebrief {
-  accuracy: number;
-  empathy: number;
-  resolutionSpeed: number;
-  policyCompliance: number;
-  overallScore: number;
-  summary: string;
-  improvements: string[];
-  strengths: string[];
+  score: {
+    accuracy: number;
+    empathyLanguage: number;
+    resolutionSpeed: number;
+    policyCompliance: number;
+  };
+  overallGrade: "PASS" | "RETRY";
+  whatWentWell: string[];
+  areasToImprove: string[];
+  policyReference: string;
+  badgeEarned: string | null;
 }

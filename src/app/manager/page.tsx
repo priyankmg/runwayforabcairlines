@@ -11,7 +11,7 @@ export default function ManagerPage() {
     <div className="mx-auto max-w-6xl space-y-8">
       <div>
         <h1 className="text-2xl font-semibold text-white">Manager dashboard</h1>
-        <p className="mt-1 text-slate-400">Marcus Chen — cohort visibility and retention risk.</p>
+        <p className="mt-1 text-slate-400">Marcus Chen — v2 training manager view, AI narratives on expert profiles, retention signals.</p>
       </div>
 
       <section
@@ -57,6 +57,8 @@ export default function ManagerPage() {
               <th className="p-3">Readiness</th>
               <th className="p-3">Pulse</th>
               <th className="p-3">Risk</th>
+              <th className="p-3">A/B</th>
+              <th className="p-3">Trajectory</th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +86,8 @@ export default function ManagerPage() {
                     {e.retentionRisk}
                   </span>
                 </td>
+                <td className="p-3 text-slate-400">{e.abGroup ?? "—"}</td>
+                <td className="p-3 text-slate-500 capitalize">{e.trajectory?.replace(/_/g, " ") ?? "—"}</td>
               </tr>
             ))}
           </tbody>

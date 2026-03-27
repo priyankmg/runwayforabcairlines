@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { JORDAN_ID } from "@/data/mock/experts";
+import type { SimulationDebrief } from "@/data/types/agents";
 
 export function MissionSimulation({ missionId, title }: { missionId: string; title: string }) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lines, setLines] = useState<{ role: string; text: string }[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [debrief, setDebrief] = useState<Record<string, unknown> | null>(null);
+  const [debrief, setDebrief] = useState<SimulationDebrief | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function start() {
@@ -151,9 +152,36 @@ export function MissionSimulation({ missionId, title }: { missionId: string; tit
         </ul>
         {debrief && (
           <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-3 text-sm">
-            <div className="font-semibold text-emerald-300">Debrief</div>
-            <p className="mt-2 text-slate-300">Overall: {(debrief as { overallScore?: number }).overallScore ?? "—"}</p>
-            <p className="mt-1 text-slate-400">{(debrief as { summary?: string }).summary}</p>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="font-semibold text-emerald-300">Mission debrief (v2)</span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                  debrief.overallGrade === "PASS" ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-200"
+                }`}
+              >
+                {debrief.overallGrade}
+              </span>
+            </div>
+            <p className="mt-2 text-xs text-slate-500">
+              Accuracy {debrief.score.accuracy} · Empathy language {debrief.score.empathyLanguage} · Speed{" "}
+              {debrief.score.resolutionSpeed} · Policy {debrief.score.policyCompliance}
+            </p>
+            <p className="mt-2 text-slate-400">
+              <span className="text-slate-500">Policy ref:</span> {debrief.policyReference}
+            </p>
+            {debrief.badgeEarned && (
+              <p className="mt-1 text-amber-200/90">Badge: {debrief.badgeEarned}</p>
+            )}
+            <ul className="mt-2 list-inside list-disc text-slate-300">
+              {debrief.whatWentWell.map((x, i) => (
+                <li key={`w-${i}`}>{x}</li>
+              ))}
+            </ul>
+            <ul className="mt-2 list-inside list-disc text-slate-400">
+              {debrief.areasToImprove.map((x, i) => (
+                <li key={`i-${i}`}>{x}</li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

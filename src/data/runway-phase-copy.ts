@@ -21,7 +21,7 @@ const COPY: Record<RunwayStage, Omit<RunwayPhaseCopy, "stage">> = {
       "First week on the ground. Get oriented, meet your cohort, and attempt your first simulation. This is where the job becomes real.",
   },
   TAXI: {
-    title: "Taxi — Training, Weeks 1–4",
+    title: "Taxi — Training Weeks 1–4",
     tagline:
       "Build your skills through simulated contacts — not policy reading. Each mission you complete unlocks the next. Progress is earned, not given.",
   },

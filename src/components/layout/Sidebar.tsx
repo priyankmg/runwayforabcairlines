@@ -11,15 +11,19 @@ import {
   Users,
   UserCog,
   BarChart3,
+  DoorOpen,
+  GraduationCap,
 } from "lucide-react";
 
 const expertLinks = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/gate", label: "Gate", icon: DoorOpen },
   { href: "/runway", label: "Runway", icon: Plane },
   { href: "/missions", label: "Missions", icon: Target },
   { href: "/contacts", label: "Contacts", icon: Phone },
   { href: "/badges", label: "Badges", icon: Award },
   { href: "/cohort", label: "Cohort", icon: Users },
+  { href: "/mentor", label: "Mentor", icon: GraduationCap },
 ];
 
 const managerLinks = [
