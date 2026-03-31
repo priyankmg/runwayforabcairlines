@@ -11,29 +11,27 @@ import {
   Users,
   UserCog,
   BarChart3,
-  DoorOpen,
   GraduationCap,
 } from "lucide-react";
 
 const expertLinks = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/gate", label: "Gate", icon: DoorOpen },
   { href: "/runway", label: "Runway", icon: Plane },
   { href: "/missions", label: "Missions", icon: Target },
   { href: "/contacts", label: "Contacts", icon: Phone },
   { href: "/badges", label: "Badges", icon: Award },
   { href: "/cohort", label: "Cohort", icon: Users },
-  { href: "/mentor", label: "Mentor", icon: GraduationCap },
 ];
 
 const managerLinks = [
   { href: "/manager", label: "Manager", icon: UserCog },
+  { href: "/mentor", label: "Mentor", icon: GraduationCap },
   { href: "/admin/metrics", label: "Metrics", icon: BarChart3 },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-  const isManagerArea = pathname.startsWith("/manager") || pathname.startsWith("/admin");
+  const isManagerArea = pathname.startsWith("/manager") || pathname.startsWith("/admin") || pathname.startsWith("/mentor");
 
   const linkCls = (href: string) => {
     const active = pathname === href || (href !== "/" && pathname.startsWith(href));

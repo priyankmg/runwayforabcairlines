@@ -28,7 +28,6 @@ export default function BadgesPage() {
               name={b.name}
               description={b.description}
               earnCondition={b.earnCondition}
-              reward={b.reward}
               earned={b.earned}
               Icon={Icon}
             />

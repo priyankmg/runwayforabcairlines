@@ -11,9 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Runway v2 | ABC Airlines Expert Onboarding",
-  description:
-    "Product spec v2.0 — continuous journey from offer to first independent contact; AI at every stage; A/B-ready metrics.",
+  title: "Runway | ABC Airlines Expert Onboarding",
+  description: "From hired to cleared for takeoff — the expert journey, reimagined.",
 };
 
 export default function RootLayout({

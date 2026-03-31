@@ -17,7 +17,7 @@ export default function MissionsPage() {
       <div className="text-center">
         <h1 className="text-2xl font-bold tracking-tight text-white">Mission runway</h1>
         <p className="mx-auto mt-2 max-w-sm text-sm text-slate-400">
-          v2 Taxi stage — simulations, shadow/reverse-shadow path in full product; here, nine missions unlock by competency toward Takeoff.
+          Mobile-style path — start at the bottom, clear each stop to climb closer to Takeoff.
         </p>
       </div>
 

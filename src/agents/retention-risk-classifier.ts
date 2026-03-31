@@ -12,11 +12,7 @@ function expertToAlert(e: Expert): RetentionRiskAlert {
     riskLevel: level,
     primarySignals:
       level === "HIGH"
-        ? [
-            "Pulse confidence drop >1.5 week over week",
-            "Check-in attendance: two or more consecutive daily check-ins missed",
-            "Simulation abandonment or login frequency decline",
-          ]
+        ? ["Pulse confidence drop >1.5 vs cohort", "Simulation abandonment pattern", "Login frequency decline"]
         : level === "MEDIUM"
           ? ["Pulse confidence softening", "Slower mission cadence"]
           : ["Nominal engagement"],

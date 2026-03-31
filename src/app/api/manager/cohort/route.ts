@@ -11,8 +11,6 @@ export async function GET() {
       readinessScore: e.readinessScore,
       pulseConfidence: e.pulseConfidence,
       retentionRisk: e.retentionRisk,
-      abGroup: e.abGroup ?? null,
-      trajectory: e.trajectory ?? null,
     })),
   });
 }
